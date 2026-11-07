@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>Bibliothèque d’activités · Portail formateur</title>
+<style>
+:root{
+  --bg:#f2f2f2; --surface:#ffffff; --text:#1b1b1b; --muted:#555a60; --line:#c9cdd2;
+  --btn:#0f5fa8; --focus:#0f5fa8; --info-bg:#e6f0fa; --alert-bg:#fdf0e1;
+  --tile:176px; --opa:93%; --largeur:1180px;
+  --panneau:rgba(255,255,255,.82); --voile:rgba(255,255,255,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#16171a; --surface:#22252a; --text:#f1f2f3; --muted:#b4b8be; --line:#3b3f46;
+    --btn:#2a6fb8; --focus:#8cc2ff; --info-bg:#1c2a3a; --alert-bg:#3a2c1a;
+    --panneau:rgba(24,26,31,.84); --voile:rgba(12,14,18,.80);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font:16px/1.45 "Segoe UI","Segoe UI Variable",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+.wrap{position:relative; max-width:var(--largeur); margin:0 auto; padding:24px 16px 48px}
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1;
+  background:linear-gradient(var(--voile), var(--voile)), url("fond-paysage.jpg") center top / cover no-repeat, var(--bg);
+}
+@media (orientation: portrait){
+  body::before{
+    background:linear-gradient(var(--voile), var(--voile)), url("fond-portrait.jpg") center top / cover no-repeat, var(--bg);
+  }
+}
+.panneau{
+  padding:20px 22px 16px; background:var(--panneau); box-shadow:0 4px 18px rgba(0,0,0,.16);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+}
+h1{font-weight:300; font-size:2.3rem; line-height:1.1; letter-spacing:-.01em; margin:0}
+h2{
+  display:inline-block; font-weight:600; font-size:1.05rem; margin:26px 0 10px; padding:4px 12px;
+  background:var(--panneau); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.muted{color:var(--muted)}
+.top{display:flex; flex-wrap:wrap; align-items:center; gap:12px 28px}
+.top h1{flex:none}
+.recherche{flex:1 1 280px; min-width:0}
+.slot-ajout{position:relative; flex:none; width:44px; height:44px}
+.btn-ajout{
+  position:absolute; top:0; right:0; z-index:3; display:flex; align-items:center; height:44px; padding:0; border:0;
+  background:var(--btn); color:#fff; font:inherit; font-weight:600; cursor:pointer; overflow:hidden;
+  box-shadow:0 3px 10px rgba(0,0,0,.28);
+}
+.btn-ajout:hover{filter:brightness(1.12)}
+.btn-ajout:focus-visible{outline:3px solid var(--focus); outline-offset:2px}
+.ba-plus{flex:none; width:44px; text-align:center; font-size:1.7rem; font-weight:300; line-height:42px}
+.ba-lib{
+  max-width:0; opacity:0; overflow:hidden; white-space:nowrap;
+  transition:max-width .28s ease, opacity .2s ease, padding .28s ease;
+}
+.btn-ajout:hover .ba-lib,.btn-ajout:focus-visible .ba-lib{max-width:15em; opacity:1; padding-right:16px}
+@media (prefers-reduced-motion: reduce){ .ba-lib{transition:none} }
+.visually-hidden{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+.btn{font:inherit; padding:8px 14px; border:2px solid var(--line); background:var(--surface); color:var(--text); cursor:pointer}
+.btn:hover{border-color:var(--text)}
+.btn.primary{background:var(--btn); border-color:var(--btn); color:#fff}
+.btn.primary:hover{filter:brightness(1.12)}
+.btn:disabled{opacity:.55; cursor:progress}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.lien:focus-visible{outline:3px solid var(--focus); outline-offset:2px}
+.lien{font:inherit; background:none; border:0; padding:0; color:var(--btn); text-decoration:underline; cursor:pointer}
+@media (prefers-color-scheme: dark){ .lien{color:var(--focus)} }
+
+.banniere{margin:14px 0 0; padding:10px 14px; border-left:6px solid var(--btn); background:var(--info-bg)}
+.banniere[data-niveau="alerte"]{border-left-color:#c2410c; background:var(--alert-bg)}
+
+.outils{margin-top:14px; display:grid; gap:10px}
+input[type=search],input[type=text],input[type=url],input[type=password],select,textarea{
+  font:inherit; width:100%; padding:9px 11px; color:var(--text); background:var(--surface); border:2px solid var(--line);
+}
+input:focus,select:focus,textarea:focus{border-color:var(--focus)}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{
+  font:inherit; font-size:.9rem; cursor:pointer; padding:6px 10px; color:var(--text); background:var(--surface);
+  border:1px solid var(--line); border-left:8px solid var(--c);
+}
+.chip .n{margin-left:6px; opacity:.7}
+.chip[aria-pressed="true"]{background:var(--c); border-color:var(--c); color:#fff}
+.plus summary{cursor:pointer; padding:6px 0; color:var(--btn); width:max-content}
+@media (prefers-color-scheme: dark){ .plus summary{color:var(--focus)} }
+.plus summary:focus-visible{outline:3px solid var(--focus); outline-offset:2px}
+@media (pointer:coarse){
+  .chip{padding:10px 14px}
+  select,input[type=search]{min-height:46px}
+  .plus summary{padding:10px 0}
+}
+.plus .selects{margin-top:6px}
+@media (min-width:700px){ .plus summary{display:none} }
+@media (max-width:700px){
+  .panneau{padding:14px 14px 10px}
+  h1{font-size:1.5rem}
+  .top{gap:10px 12px}
+  .top h1{flex:1 1 auto; order:1}
+  .slot-ajout{order:2}
+  .recherche{order:3; flex:1 1 100%}
+  .chips{flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px}
+  .chip{flex:none}
+}
+.selects{display:flex; flex-wrap:wrap; gap:10px 14px; align-items:flex-end}
+.selects label{display:grid; gap:3px; font-size:.82rem; color:var(--muted); min-width:150px}
+.selects select{width:auto; min-width:150px}
+
+/* ---------- Tuiles ---------- */
+.grille{display:grid; gap:8px; grid-template-columns:repeat(auto-fill,minmax(var(--tile),1fr))}
+@media (max-width:600px){ :root{--tile:150px} }
+.tile{
+  position:relative; aspect-ratio:1/1; perspective:900px;
+  box-shadow:0 3px 10px rgba(0,0,0,.26), 0 1px 2px rgba(0,0,0,.18);
+  transition:box-shadow .18s ease, transform .18s ease;
+}
+.tile:hover{box-shadow:0 9px 22px rgba(0,0,0,.34), 0 2px 4px rgba(0,0,0,.2); transform:translateY(-2px)}
+.apercu-fixe:hover{transform:none}
+.tile.large{grid-column:span 2; aspect-ratio:2/1}
+@media (max-width:339px){ .tile.large{grid-column:span 1; aspect-ratio:1/1} }
+.tile-inner{position:absolute; inset:0; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.tile.flipped .tile-inner{transform:rotateY(180deg)}
+.face{position:absolute; inset:0; overflow:hidden; color:#fff; background:var(--c); background:linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.10)), color-mix(in srgb, var(--c) var(--opa), transparent); backface-visibility:hidden; -webkit-backface-visibility:hidden}
+.back{transform:rotateY(180deg); background:var(--c); background:linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.10)), color-mix(in srgb, color-mix(in srgb, var(--c) 80%, #000) var(--opa), transparent)}
+.tile.indispo{--c:#6b6b6b}
+.tile:not(.apercu-fixe) .front:hover{box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
+
+.tile-link{
+  position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between;
+  padding:10px 12px; color:inherit; text-decoration:none;
+}
+a.tile-link:focus-visible{outline:none; box-shadow:inset 0 0 0 3px #fff, inset 0 0 0 7px rgba(0,0,0,.55)}
+.t-top{display:block; padding-right:34px}
+.t-format{font-size:.78rem; opacity:.95}
+.t-tags{display:flex; flex-wrap:wrap; align-items:center; gap:2px 8px; margin-bottom:3px}
+.t-badge{font-size:.74rem; font-weight:600; border:1px solid rgba(255,255,255,.9); padding:0 6px}
+.t-note{font-size:.78rem; opacity:.95}
+.t-nom{
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+  font-size:1.12rem; font-weight:600; line-height:1.2; overflow-wrap:break-word; hyphens:auto;
+}
+.tile.large .t-nom{font-size:1.4rem}
+
+.info{
+  position:absolute; top:2px; right:2px; width:44px; height:44px; padding:0; border:0; background:transparent;
+  color:#fff; cursor:pointer; display:grid; place-items:center; z-index:2;
+}
+.info::before{content:""; position:absolute; width:26px; height:26px; border:2px solid rgba(255,255,255,.92); border-radius:50%}
+.info:hover::before{background:rgba(255,255,255,.24)}
+.info span{position:relative; font:italic 700 15px Georgia,"Times New Roman",serif}
+.info:focus-visible{outline:none; box-shadow:inset 0 0 0 3px #fff, inset 0 0 0 7px rgba(0,0,0,.55)}
+
+.b-scroll{
+  position:absolute; inset:0 0 40px 0; overflow:auto; padding:9px 12px;
+  scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.65) transparent;
+}
+.b-meta{margin:0; display:grid; grid-template-columns:7em 1fr; gap:2px 6px; font-size:.76rem; line-height:1.28}
+.b-meta dt{opacity:.8}
+.b-meta dd{margin:0; overflow-wrap:anywhere}
+.b-desc{margin:8px 0 0; font-size:.78rem; line-height:1.32; opacity:.97}
+.b-actions{position:absolute; left:0; right:0; bottom:0; display:flex; gap:6px; padding:5px 8px; background:rgba(0,0,0,.18)}
+.b-btn{
+  flex:1; font:inherit; font-size:.84rem; font-weight:600; text-align:center; text-decoration:none; cursor:pointer;
+  padding:3px 8px; color:#fff; background:transparent; border:2px solid rgba(255,255,255,.85);
+}
+.b-btn.plein{background:#fff; color:#1b1b1b; border-color:#fff}
+.b-btn:hover{filter:brightness(.93)}
+.b-btn:focus-visible{outline:3px solid #fff; outline-offset:2px}
+
+.vide{padding:18px; border:2px dashed var(--line); background:var(--panneau)}
+@media (prefers-reduced-motion: reduce){ .tile-inner,.tile{transition:none} .tile:hover{transform:none} }
+
+/* ---------- Boîtes de dialogue ---------- */
+dialog{padding:0; border:0; width:min(720px,94vw); max-height:94vh; color:var(--text); background:var(--surface); box-shadow:0 12px 48px rgba(0,0,0,.45)}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+.dlg{padding:22px; display:grid; gap:14px}
+.dlg h2{margin:0; font-size:1.35rem; font-weight:300}
+.dlg p{margin:0}
+.dlg-actions{display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end}
+.check{display:flex; gap:8px; align-items:center; font-size:.92rem}
+.check input{width:auto}
+.ajout-corps{display:grid; gap:18px; grid-template-columns:1fr 190px; align-items:start}
+@media (max-width:640px){ .ajout-corps{grid-template-columns:1fr} }
+.formgrid{display:grid; gap:12px; grid-template-columns:1fr 1fr}
+@media (max-width:640px){ .formgrid{grid-template-columns:1fr} }
+.champ{display:grid; gap:4px; align-content:start; font-size:.86rem; font-weight:600}
+.champ small{font-weight:400; color:var(--muted)}
+.champ.large{grid-column:1/-1}
+.champ.check{display:flex; align-items:center; gap:8px; font-weight:400; font-size:.92rem}
+.apercu{position:sticky; top:0}
+.apercu .tile{width:176px; height:176px; aspect-ratio:auto}
+.apercu p{font-size:.82rem; color:var(--muted); margin-top:8px}
+.erreur{padding:9px 12px; border-left:6px solid #c2410c; background:var(--alert-bg)}
+
+footer{margin-top:36px; padding:10px 14px; background:var(--panneau); display:flex; flex-wrap:wrap; gap:8px 20px; font-size:.86rem; color:var(--text)}
+#toast{
+  position:fixed; left:50%; bottom:22px; transform:translateX(-50%); max-width:92vw; padding:11px 18px;
+  background:#1b1b1b; color:#fff; box-shadow:0 6px 24px rgba(0,0,0,.4); z-index:50;
+}
+#toast[hidden]{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panneau">
+  <header class="top">
+    <h1>Bibliothèque d’activités</h1>
+    <div class="recherche">
+      <label class="visually-hidden" for="q">Rechercher une activité</label>
+      <input id="q" type="search" placeholder="Rechercher par nom, thème, format ou mot de la description" autocomplete="off">
+    </div>
+    <div class="slot-ajout">
+      <button id="btnAjout" class="btn-ajout" type="button" aria-label="Ajouter une application">
+        <span class="ba-plus" aria-hidden="true">+</span>
+        <span class="ba-lib">Ajouter une application</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="banniere" class="banniere" role="status" hidden></div>
+
+  <section class="outils" aria-label="Filtres">
+    <div id="themes" class="chips" role="group" aria-label="Filtrer par thème"></div>
+    <details id="plusFiltres" class="plus">
+      <summary>Filtrer par format, accès ou QR</summary>
+      <div class="selects">
+        <label>Format <select id="sFormat"></select></label>
+        <label>Accès <select id="sAcces"></select></label>
+        <label>QR dans l’espace formateur <select id="sQr"></select></label>
+        <button id="btnReset" class="btn" type="button">Réinitialiser</button>
+      </div>
+    </details>
+  </section>
+  </div>
+
+  <main>
+    <noscript><p class="vide">Cette page a besoin de JavaScript pour afficher la bibliothèque.</p></noscript>
+    <section id="secUne" hidden>
+      <h2>À la une</h2>
+      <div id="gridUne" class="grille"></div>
+    </section>
+    <section id="secRecents" hidden>
+      <h2>Ouvertes récemment</h2>
+      <div id="gridRecents" class="grille"></div>
+    </section>
+    <section>
+      <h2>Toutes les activités <span id="compte" class="muted"></span></h2>
+      <div id="grille" class="grille"></div>
+      <p id="vide" class="vide" hidden></p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Chaque tuile ouvre l’espace formateur de l’application ; le QR code destiné aux stagiaires s’y projette.</span>
+    <span id="etatCatalogue"></span>
+    <button id="reactiverAlertes" class="lien" type="button" hidden>Réactiver les alertes de démonstration</button>
+  </footer>
+</div>
+
+<dialog id="dlgDemo" aria-labelledby="demoTitre">
+  <form method="dialog" class="dlg">
+    <h2 id="demoTitre">Application en démonstration</h2>
+    <p>« <strong id="demoNom"></strong> » enregistre les réponses dans l’espace de son concepteur.</p>
+    <p>Utilisez-la en démonstration uniquement : ne saisissez pas de données réelles (prénoms de stagiaires, résultats).</p>
+    <label class="check"><input type="checkbox" id="demoSilence"> Ne plus afficher cette alerte sur cet appareil</label>
+    <div class="dlg-actions">
+      <button class="btn" value="cancel">Annuler</button>
+      <button class="btn primary" value="ok" autofocus>Ouvrir en démonstration</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlgAjout" aria-labelledby="ajoutTitre">
+  <form id="formAjout" class="dlg" novalidate>
+    <h2 id="ajoutTitre">Ajouter une application</h2>
+    <div class="ajout-corps">
+      <div class="formgrid">
+        <label class="champ large">Nom de la tuile *
+          <input id="fNom" type="text" maxlength="60" autocomplete="off">
+        </label>
+        <label class="champ">Thème *
+          <select id="fTheme"></select>
+        </label>
+        <label class="champ">Format *
+          <input id="fFormat" type="text" maxlength="40" list="dlFormats" autocomplete="off">
+          <datalist id="dlFormats"></datalist>
+        </label>
+        <label class="champ large">Description *
+          <textarea id="fDescription" rows="2" maxlength="200"></textarea>
+          <small><span id="cptDesc">0</span> / 200 caractères</small>
+        </label>
+        <label class="champ">Accès *
+          <select id="fAcces">
+            <option value="Autonome">Autonome</option>
+            <option value="Démo">Démonstration</option>
+          </select>
+          <small>Démonstration : l’application enregistre dans un Google Sheet.</small>
+        </label>
+        <label class="champ">QR dans l’espace formateur
+          <select id="fQr">
+            <option value="Oui">Oui</option>
+            <option value="Non">Non</option>
+            <option value="?">À vérifier</option>
+          </select>
+        </label>
+        <label class="champ">Lien formateur
+          <input id="fLienF" type="url" placeholder="https://…" autocomplete="off">
+        </label>
+        <label class="champ">Lien stagiaire
+          <input id="fLienS" type="url" placeholder="https://…" autocomplete="off">
+          <small>Au moins un des deux liens est nécessaire.</small>
+        </label>
+        <label class="champ">Durée
+          <input id="fDuree" type="text" maxlength="30" placeholder="Facultatif">
+        </label>
+        <label class="champ">Taille du groupe
+          <input id="fGroupe" type="text" maxlength="30" placeholder="Facultatif">
+        </label>
+        <label class="champ">Formation
+          <input id="fFormation" type="text" maxlength="80" placeholder="Facultatif">
+        </label>
+        <label class="champ">Statut
+          <select id="fStatut">
+            <option value="">Aucun</option>
+            <option>Prête</option>
+            <option>En évolution</option>
+            <option>Version antérieure</option>
+            <option>Complément papier</option>
+          </select>
+        </label>
+        <label class="check champ large"><input id="fUne" type="checkbox"> Mettre à la une</label>
+        <label class="champ large">Clé d’ajout *
+          <input id="fCle" type="password" autocomplete="off">
+        </label>
+        <label class="check champ large"><input id="fCleSession" type="checkbox"> Garder la clé jusqu’à la fermeture de l’onglet</label>
+      </div>
+      <aside class="apercu" aria-label="Aperçu de la tuile">
+        <div id="apercu"></div>
+        <p>Aperçu de la tuile. Le bouton « i » montre le verso.</p>
+      </aside>
+    </div>
+    <div id="ajoutErreur" class="erreur" role="alert" hidden></div>
+    <div class="dlg-actions">
+      <button id="ajoutAnnuler" class="btn" type="button">Annuler</button>
+      <button id="ajoutEnvoyer" class="btn primary" type="submit">Ajouter à la bibliothèque</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ================= Configuration =================
+     Coller ici l’adresse de déploiement de l’application Apps Script
+     (elle se termine par /exec). Tant qu’elle est vide, le portail
+     fonctionne avec le catalogue de secours ci-dessous, en lecture seule. */
+  const URL_CATALOGUE = 'https://script.google.com/macros/s/AKfycbwed7-4TLZDeB0w2bUlyEqX4tuuqf-lVDlEk42ChucVIyrHNyxpltdt65Fuqdp9mMFyeg/exec';
+
+  const DELAI_RESEAU_MS = 10000;
+  const COULEUR_DEFAUT = '#4A5568';
+  const COULEUR_INDISPONIBLE = '#6B6B6B';
+  const CLE_CACHE = 'portail.catalogue.v1';
+  const CLE_RECENTS = 'portail.recents.v1';
+  const CLE_ALERTES = 'portail.alertes.v1';
+  const CLE_SESSION = 'portail.cle.session';
+
+  /* Instantané du catalogue au moment de la livraison. Il ne sert que si la
+     table de données est injoignable et qu’aucune version n’est en mémoire. */
+  const THEMES_SECOURS = [
+  {
+    "theme": "Management & posture",
+    "couleur": "#1F6FB5",
+    "ordre": 1
+  },
+  {
+    "theme": "Communication & assertivité",
+    "couleur": "#7B3F9E",
+    "ordre": 2
+  },
+  {
+    "theme": "Temps, projet & organisation",
+    "couleur": "#00796B",
+    "ordre": 3
+  },
+  {
+    "theme": "RH & entretiens",
+    "couleur": "#C2410C",
+    "ordre": 4
+  },
+  {
+    "theme": "Jeux collectifs",
+    "couleur": "#2E7D32",
+    "ordre": 5
+  }
+];
+  const APPS_SECOURS = [
+  {
+    "identifiant": "manager-ideal",
+    "nom": "Manager idéal",
+    "theme": "Management & posture",
+    "format": "Ice breaker",
+    "description": "Ice breaker : les qualités du manager idéal.",
+    "acces": "Démo",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/manager-ideal/animateur.html",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/manager-ideal/",
+    "qr_espace_formateur": "?",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "leviers-de-motivation",
+    "nom": "Leviers de motivation",
+    "theme": "Management & posture",
+    "format": "Jeu de rôle",
+    "description": "Mise en situation avec rotation des rôles pour repérer les leviers de motivation.",
+    "acces": "Autonome",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/leviers-de-motivation/#admin",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "Oui",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "beaute-soins-styles-de-management",
+    "nom": "Beauté & Soins : styles de management",
+    "theme": "Management & posture",
+    "format": "Étude de cas",
+    "description": "Situations managériales pour introduire Hersey et Blanchard, avec une synthèse pour le formateur.",
+    "acces": "Démo",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/management-b-et-s/formateur",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/management-b-et-s/",
+    "qr_espace_formateur": "?",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "posture-manageriale",
+    "nom": "Posture managériale",
+    "theme": "Management & posture",
+    "format": "Jeu de rôle",
+    "description": "Séquence sur la posture à tenir face à une décision de la direction avec laquelle on n’est pas d’accord.",
+    "acces": "Autonome",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/posture-manageriale/",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "Oui",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "saisie-beaute-soins-grille-papier",
+    "nom": "Saisie Beauté & Soins (grille papier)",
+    "theme": "Management & posture",
+    "format": "Outil de saisie",
+    "description": "Saisie des choix faits après consultation du livret papier Beauté & Soins.",
+    "acces": "Démo",
+    "lien_formateur": "",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/grille-management/",
+    "qr_espace_formateur": "Non",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "Complément papier",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "profil-couleurs",
+    "nom": "Profil couleurs",
+    "theme": "Communication & assertivité",
+    "format": "Questionnaire",
+    "description": "Questionnaire de sensibilisation aux préférences comportementales par couleur. Ni diagnostic psychologique, ni test validé.",
+    "acces": "Autonome",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/profil-couleurs/",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/profil-couleurs/",
+    "qr_espace_formateur": "Non",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "evaluer-son-assertivite",
+    "nom": "Évaluer son assertivité",
+    "theme": "Communication & assertivité",
+    "format": "Questionnaire",
+    "description": "Questionnaire pour évaluer son assertivité.",
+    "acces": "Autonome",
+    "lien_formateur": "",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/assertivite/",
+    "qr_espace_formateur": "Non",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "desc-et-disc",
+    "nom": "DESC et DISC",
+    "theme": "Communication & assertivité",
+    "format": "Jeu de rôle",
+    "description": "Réaliser un DESC en s’adaptant à la couleur de l’interlocuteur : 24 situations à tirer au sort.",
+    "acces": "Autonome",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/desc-et-disc/",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "Oui",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "desc-adapte-a-la-couleur-v1",
+    "nom": "DESC adapté à la couleur (V1)",
+    "theme": "Communication & assertivité",
+    "format": "Jeu de rôle",
+    "description": "Première version du DESC adapté à la couleur de l’interlocuteur. La V2 est « DESC et DISC ».",
+    "acces": "Autonome",
+    "lien_formateur": "",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/Assertivite_Exo/",
+    "qr_espace_formateur": "Non",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "Version antérieure",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "gestion-de-conflit",
+    "nom": "Gestion de conflit",
+    "theme": "Communication & assertivité",
+    "format": "Simulation",
+    "description": "Simulations de situations conflictuelles avec distribution des rôles et vision de synthèse pour le formateur.",
+    "acces": "Autonome",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/gestion-de-conflits/",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "Oui",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "quiz-donner-un-feedback",
+    "nom": "Quiz « Donner un feedback »",
+    "theme": "Communication & assertivité",
+    "format": "Quiz",
+    "description": "Treize questions rapides pour faire le point sur ses réflexes de feedback. Ni note, ni classement.",
+    "acces": "Démo",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/quiz-feedback/animateur.html",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "Oui",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "rapport-au-temps",
+    "nom": "Rapport au temps",
+    "theme": "Temps, projet & organisation",
+    "format": "Autodiagnostic",
+    "description": "Autodiagnostic de son rapport au temps. Pas de vue formateur.",
+    "acces": "Autonome",
+    "lien_formateur": "",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/auto-diagnostic-rapport-temps/",
+    "qr_espace_formateur": "Non",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "gestion-du-temps-et-des-priorites",
+    "nom": "Gestion du temps et des priorités",
+    "theme": "Temps, projet & organisation",
+    "format": "Étude de cas",
+    "description": "Étude de cas sur la gestion du temps et des priorités.",
+    "acces": "Démo",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/gestion-priorites/",
+    "lien_stagiaire": "https://patrickdemont-formateur.github.io/gestion-priorites/",
+    "qr_espace_formateur": "Non",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "auto-diagnostic-bloc-3",
+    "nom": "Auto-diagnostic Bloc 3",
+    "theme": "Temps, projet & organisation",
+    "format": "Autodiagnostic",
+    "description": "Auto-évaluation des connaissances du bloc 3, avec cartographie du groupe pour le formateur.",
+    "acces": "Démo",
+    "lien_formateur": "",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "Oui",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "entretiens-professionnels",
+    "nom": "Entretiens professionnels",
+    "theme": "RH & entretiens",
+    "format": "Jeu de rôle",
+    "description": "Préparation aux entretiens professionnels : trois rôles, huit situations, un débrief.",
+    "acces": "Démo",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/simulator-entretien-pro/",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "?",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  },
+  {
+    "identifiant": "oado-skyscraper",
+    "nom": "OADO Skyscraper",
+    "theme": "Jeux collectifs",
+    "format": "Outil de suivi",
+    "description": "Outil de calcul pour le jeu Skyscraper (tour en Kapla).",
+    "acces": "Démo",
+    "lien_formateur": "https://patrickdemont-formateur.github.io/skyscrapers-oado/animateur.html",
+    "lien_stagiaire": "",
+    "qr_espace_formateur": "Oui",
+    "duree": "",
+    "groupe": "",
+    "formation": "",
+    "statut": "",
+    "a_la_une": "",
+    "visible": "Oui"
+  }
+];
+
+  /* ================= Outils ================= */
+  const $ = (id) => document.getElementById(id);
+  const norm = (s) => String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  const slug = (s) => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const urlValide = (u) => /^https:\/\/[^\s<>"']+$/i.test(String(u == null ? '' : u).trim());
+  const couleurValide = (c) => /^#[0-9a-f]{6}$/i.test(String(c == null ? '' : c).trim());
+
+  const stock = {
+    lire(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } },
+    ecrire(k, v) { try { window.localStorage.setItem(k, v); return true; } catch (e) { return false; } },
+    lireSession(k) { try { return window.sessionStorage.getItem(k); } catch (e) { return null; } },
+    ecrireSession(k, v) { try { window.sessionStorage.setItem(k, v); } catch (e) { /* ignoré */ } },
+    effacerSession(k) { try { window.sessionStorage.removeItem(k); } catch (e) { /* ignoré */ } }
+  };
+
+  function el(tag, attrs, ...enfants) {
+    const n = document.createElement(tag);
+    if (attrs) {
+      for (const [k, v] of Object.entries(attrs)) {
+        if (v == null || v === false) continue;
+        if (k === 'class') n.className = v;
+        else if (k === 'text') n.textContent = v;
+        else n.setAttribute(k, v === true ? '' : v);
+      }
+    }
+    enfants.flat().forEach((c) => {
+      if (c == null || c === false) return;
+      n.append(c.nodeType ? c : document.createTextNode(String(c)));
+    });
+    return n;
+  }
+
+  function ouvrirDialogue(d) {
+    if (typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', '');
+  }
+  function fermerDialogue(d, valeur) {
+    if (typeof d.close === 'function') d.close(valeur); else d.removeAttribute('open');
+  }
+
+  let minuteurToast = null;
+  function toast(message) {
+    const t = $('toast');
+    t.textContent = message;
+    t.hidden = false;
+    clearTimeout(minuteurToast);
+    minuteurToast = setTimeout(() => { t.hidden = true; }, 4500);
+  }
+
+  /* ================= Données ================= */
+  const etat = {
+    themes: [], apps: [], source: 'secours', empreinte: '', miseAJour: null,
+    filtres: { q: '', themes: new Set(), format: '', acces: '', qr: '' }
+  };
+
+  function modele(brut, parNom, themes) {
+    if (!brut || typeof brut !== 'object') return null;
+    const nom = String(brut.nom || '').trim();
+    if (!nom) return null;
+
+    const lf = urlValide(brut.lien_formateur) ? String(brut.lien_formateur).trim() : '';
+    const ls = urlValide(brut.lien_stagiaire) ? String(brut.lien_stagiaire).trim() : '';
+    const lancement = lf ? { url: lf, type: 'formateur' } : (ls ? { url: ls, type: 'stagiaire' } : null);
+
+    let nomTheme = String(brut.theme || '').trim();
+    let t = parNom.get(norm(nomTheme));
+    if (!t && themes) {
+      t = { theme: nomTheme || 'Sans thème', couleur: COULEUR_DEFAUT, ordre: 1000 + themes.length };
+      themes.push(t);
+      parNom.set(norm(t.theme), t);
+      parNom.set(norm(nomTheme), t);
+    }
+    const qr = norm(brut.qr_espace_formateur);
+    const app = {
+      id: String(brut.identifiant || '').trim() || slug(nom),
+      nom,
+      theme: t ? t.theme : nomTheme,
+      format: String(brut.format || '').trim(),
+      description: String(brut.description || '').trim(),
+      acces: norm(brut.acces) === 'autonome' ? 'autonome' : 'demo',
+      lancement,
+      qr: qr === 'oui' ? 'oui' : (qr === 'non' ? 'non' : 'inconnu'),
+      duree: String(brut.duree || '').trim(),
+      groupe: String(brut.groupe || '').trim(),
+      formation: String(brut.formation || '').trim(),
+      statut: String(brut.statut || '').trim(),
+      une: norm(brut.a_la_une) === 'oui',
+      couleur: lancement ? (t ? t.couleur : COULEUR_DEFAUT) : COULEUR_INDISPONIBLE
+    };
+    app.recherche = norm([app.nom, app.description, app.theme, app.format, app.formation, app.statut].join(' '));
+    return app;
+  }
+
+  function appliquer(donnees, source) {
+    const empreinte = JSON.stringify(donnees);
+    etat.source = source;
+    if (empreinte === etat.empreinte) { majPied(); return; }
+    etat.empreinte = empreinte;
+
+    const themes = (Array.isArray(donnees.themes) ? donnees.themes : [])
+      .map((t) => ({
+        theme: String((t && t.theme) || '').trim(),
+        couleur: couleurValide(t && t.couleur) ? String(t.couleur).trim() : COULEUR_DEFAUT,
+        ordre: Number(t && t.ordre) || 999
+      }))
+      .filter((t) => t.theme);
+    themes.sort((a, b) => a.ordre - b.ordre || a.theme.localeCompare(b.theme, 'fr'));
+    const parNom = new Map(themes.map((t) => [norm(t.theme), t]));
+
+    const vus = new Map();
+    const apps = [];
+    (Array.isArray(donnees.apps) ? donnees.apps : []).forEach((brut) => {
+      try {
+        const a = modele(brut, parNom, themes);
+        if (!a) return;
+        if (norm(brut.visible) === 'non') return;
+        const n = (vus.get(a.id) || 0) + 1;
+        vus.set(a.id, n);
+        if (n > 1) a.id = a.id + '-' + n;
+        apps.push(a);
+      } catch (e) {
+        console.warn('Ligne du catalogue ignorée :', e);
+      }
+    });
+
+    const rang = (a) => themes.findIndex((t) => norm(t.theme) === norm(a.theme));
+    apps.sort((a, b) => rang(a) - rang(b) || a.nom.localeCompare(b.nom, 'fr'));
+
+    etat.themes = themes;
+    etat.apps = apps;
+    if (etat.filtres.format && !apps.some((a) => norm(a.format) === norm(etat.filtres.format))) etat.filtres.format = '';
+
+    rendreChips();
+    rendreSelects();
+    majFiltres();
+    majPied();
+  }
+
+  /* ================= Chargement ================= */
+  function lireCache() {
+    try {
+      const j = JSON.parse(stock.lire(CLE_CACHE) || 'null');
+      return j && Array.isArray(j.apps) ? j : null;
+    } catch (e) { return null; }
+  }
+
+  async function recuperer() {
+    const ctl = new AbortController();
+    const minuteur = setTimeout(() => ctl.abort(), DELAI_RESEAU_MS);
+    try {
+      const sep = URL_CATALOGUE.indexOf('?') >= 0 ? '&' : '?';
+      const r = await fetch(URL_CATALOGUE + sep + 't=' + Date.now(), { signal: ctl.signal, cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const j = await r.json();
+      if (!j || j.ok !== true || !Array.isArray(j.apps)) throw new Error('Réponse inattendue');
+      return { themes: Array.isArray(j.themes) ? j.themes : [], apps: j.apps };
+    } finally {
+      clearTimeout(minuteur);
+    }
+  }
+
+  function banniere(message, niveau) {
+    const b = $('banniere');
+    b.hidden = !message;
+    b.textContent = message || '';
+    b.dataset.niveau = niveau || '';
+  }
+
+  async function charger() {
+    const cache = lireCache();
+    appliquer(cache || { themes: THEMES_SECOURS, apps: APPS_SECOURS }, cache ? 'cache' : 'secours');
+    if (!URL_CATALOGUE) {
+      banniere('La table de données n’est pas encore connectée : le catalogue de secours est affiché et l’ajout d’applications est désactivé.', 'info');
+      return;
+    }
+    try {
+      const donnees = await recuperer();
+      stock.ecrire(CLE_CACHE, JSON.stringify(donnees));
+      etat.miseAJour = new Date();
+      appliquer(donnees, 'en-ligne');
+      banniere('');
+    } catch (e) {
+      banniere(cache
+        ? 'La table de données est injoignable : la dernière version connue est affichée.'
+        : 'La table de données est injoignable : le catalogue de secours est affiché.', 'alerte');
+    }
+  }
+
+  /* ================= Récents et alertes ================= */
+  function lireRecents() {
+    try {
+      const v = JSON.parse(stock.lire(CLE_RECENTS) || '[]');
+      return Array.isArray(v) ? v.filter((x) => typeof x === 'string') : [];
+    } catch (e) { return []; }
+  }
+  function noterRecent(id) {
+    const liste = [id].concat(lireRecents().filter((x) => x !== id)).slice(0, 4);
+    stock.ecrire(CLE_RECENTS, JSON.stringify(liste));
+  }
+  const alertesActives = () => stock.lire(CLE_ALERTES) !== 'off';
+
+  function confirmerDemo(app) {
+    return new Promise((resolve) => {
+      const d = $('dlgDemo');
+      $('demoNom').textContent = app.nom;
+      $('demoSilence').checked = false;
+      d.returnValue = '';
+      const fin = () => {
+        d.removeEventListener('close', fin);
+        const ok = d.returnValue === 'ok';
+        if (ok && $('demoSilence').checked) { stock.ecrire(CLE_ALERTES, 'off'); majPied(); }
+        resolve(ok);
+      };
+      d.addEventListener('close', fin);
+      ouvrirDialogue(d);
+    });
+  }
+
+  function surClicTuile(ev, app) {
+    noterRecent(app.id);
+    if (ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
+    if (app.acces === 'demo' && alertesActives()) {
+      ev.preventDefault();
+      confirmerDemo(app).then((ok) => {
+        if (ok) window.open(app.lancement.url, '_blank', 'noopener,noreferrer');
+      });
+    }
+  }
+
+  /* ================= Tuiles ================= */
+  const libelleQr = (q) => (q === 'oui' ? 'Intégré' : (q === 'non' ? 'À prévoir' : 'À vérifier'));
+
+  function tuile(app, options) {
+    const grande = !!(options && options.grande);
+    const apercu = !!(options && options.apercu);
+    const racine = el('div', {
+      class: 'tile' + (grande ? ' large' : '') + (app.lancement ? '' : ' indispo') + (apercu ? ' apercu-fixe' : ''),
+      style: '--c:' + app.couleur,
+      'data-id': app.id
+    });
+
+    let note = '';
+    if (!app.lancement) note = 'Lien à compléter';
+    else if (app.lancement.type === 'stagiaire') note = 'Lien stagiaire';
+
+    const contenu = [
+      el('span', { class: 't-top' },
+        el('span', { class: 't-format', text: app.format })),
+      el('span', { class: 't-bas' },
+        (app.acces === 'demo' || note) ? el('span', { class: 't-tags' },
+          app.acces === 'demo' ? el('span', { class: 't-badge', text: 'Démo' }) : null,
+          note ? el('span', { class: 't-note', text: note }) : null) : null,
+        el('span', { class: 't-nom', text: app.nom }))
+    ];
+
+    let lien;
+    if (app.lancement && !apercu) {
+      lien = el('a', {
+        class: 'tile-link', href: app.lancement.url, target: '_blank', rel: 'noopener noreferrer',
+        'aria-label': 'Ouvrir ' + app.nom + (app.acces === 'demo' ? ' (démonstration)' : '')
+      }, contenu);
+      lien.addEventListener('click', (ev) => surClicTuile(ev, app));
+    } else {
+      lien = el('div', { class: 'tile-link' }, contenu);
+    }
+
+    const info = el('button', {
+      class: 'info', type: 'button', 'aria-label': 'Informations sur ' + app.nom, 'aria-expanded': 'false'
+    }, el('span', { 'aria-hidden': 'true', text: 'i' }));
+    const avant = el('div', { class: 'face front' }, lien, info);
+
+    const meta = el('dl', { class: 'b-meta' });
+    const ligne = (libelle, valeur) => { if (valeur) meta.append(el('dt', { text: libelle }), el('dd', { text: valeur })); };
+    ligne('Thème', app.theme);
+    ligne('Format', app.format);
+    ligne('Accès', app.acces === 'demo' ? 'Démonstration' : 'Autonome');
+    ligne('QR formateur', libelleQr(app.qr));
+    ligne('Lien', app.lancement
+      ? (app.lancement.type === 'formateur' ? 'Formateur' : 'Stagiaire')
+      : 'Aucun');
+    ligne('Durée', app.duree);
+    ligne('Groupe', app.groupe);
+    ligne('Formation', app.formation);
+    ligne('Statut', app.statut);
+
+    const retour = el('button', { class: 'b-btn', type: 'button', text: 'Retour' });
+    let ouvrir = null;
+    if (app.lancement && !apercu) {
+      ouvrir = el('a', {
+        class: 'b-btn plein', href: app.lancement.url, target: '_blank', rel: 'noopener noreferrer', text: 'Ouvrir'
+      });
+      ouvrir.addEventListener('click', (ev) => surClicTuile(ev, app));
+    }
+    const arriere = el('div', { class: 'face back', inert: true },
+      el('div', { class: 'b-scroll' },
+        meta,
+        app.description ? el('p', { class: 'b-desc', text: app.description }) : null),
+      el('div', { class: 'b-actions' }, ouvrir, retour));
+
+    function retourner(vers) {
+      racine.classList.toggle('flipped', vers);
+      avant.toggleAttribute('inert', vers);
+      arriere.toggleAttribute('inert', !vers);
+      info.setAttribute('aria-expanded', String(vers));
+      (vers ? retour : info).focus({ preventScroll: true });
+    }
+    info.addEventListener('click', () => retourner(true));
+    retour.addEventListener('click', () => retourner(false));
+    racine.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape' && racine.classList.contains('flipped')) retourner(false);
+    });
+
+    racine.append(el('div', { class: 'tile-inner' }, avant, arriere));
+    return racine;
+  }
+
+  /* ================= Filtres et rendu ================= */
+  const filtreActif = () => {
+    const f = etat.filtres;
+    return !!(norm(f.q) || f.themes.size || f.format || f.acces || f.qr);
+  };
+
+  function filtrer() {
+    const f = etat.filtres;
+    const mots = norm(f.q).split(/\s+/).filter(Boolean);
+    return etat.apps.filter((a) => {
+      if (f.themes.size && !f.themes.has(norm(a.theme))) return false;
+      if (f.format && norm(a.format) !== norm(f.format)) return false;
+      if (f.acces && a.acces !== f.acces) return false;
+      if (f.qr === 'oui' && a.qr !== 'oui') return false;
+      if (f.qr === 'afaire' && a.qr === 'oui') return false;
+      return mots.every((m) => a.recherche.indexOf(m) >= 0);
+    });
+  }
+
+  function rendreChips() {
+    const conteneur = $('themes');
+    conteneur.replaceChildren();
+    const toutes = el('button', {
+      class: 'chip', type: 'button', style: '--c:#5F646B', 'aria-pressed': 'true', 'data-toutes': '1'
+    }, 'Toutes', el('span', { class: 'n', text: String(etat.apps.length) }));
+    toutes.addEventListener('click', () => { etat.filtres.themes.clear(); majFiltres(); });
+    conteneur.append(toutes);
+    etat.themes.forEach((t) => {
+      const n = etat.apps.filter((a) => norm(a.theme) === norm(t.theme)).length;
+      if (!n) return;
+      const cle = norm(t.theme);
+      const b = el('button', {
+        class: 'chip', type: 'button', style: '--c:' + t.couleur, 'aria-pressed': 'false', 'data-theme': cle
+      }, t.theme, el('span', { class: 'n', text: String(n) }));
+      b.addEventListener('click', () => {
+        if (etat.filtres.themes.has(cle)) etat.filtres.themes.delete(cle); else etat.filtres.themes.add(cle);
+        majFiltres();
+      });
+      conteneur.append(b);
+    });
+  }
+
+  function remplirSelect(select, options, valeur) {
+    select.replaceChildren(...options.map((o) => el('option', { value: o.v, text: o.l })));
+    select.value = options.some((o) => o.v === valeur) ? valeur : '';
+  }
+
+  function formatsConnus() {
+    const m = new Map();
+    etat.apps.forEach((a) => { if (a.format && !m.has(norm(a.format))) m.set(norm(a.format), a.format); });
+    return [...m.values()].sort((a, b) => a.localeCompare(b, 'fr'));
+  }
+
+  function rendreSelects() {
+    remplirSelect($('sFormat'),
+      [{ v: '', l: 'Tous les formats' }].concat(formatsConnus().map((f) => ({ v: f, l: f }))),
+      etat.filtres.format);
+    remplirSelect($('sAcces'), [
+      { v: '', l: 'Tous' }, { v: 'autonome', l: 'Autonome' }, { v: 'demo', l: 'Démonstration' }
+    ], etat.filtres.acces);
+    remplirSelect($('sQr'), [
+      { v: '', l: 'Tous' }, { v: 'oui', l: 'Intégré' }, { v: 'afaire', l: 'À prévoir ou à vérifier' }
+    ], etat.filtres.qr);
+  }
+
+  function majFiltres() {
+    document.querySelectorAll('#themes .chip').forEach((b) => {
+      const actif = b.dataset.toutes ? etat.filtres.themes.size === 0 : etat.filtres.themes.has(b.dataset.theme);
+      b.setAttribute('aria-pressed', String(actif));
+    });
+    rendreGrilles();
+  }
+
+  function rendreGrilles() {
+    const total = etat.apps.length;
+    const resultats = filtrer();
+    const actif = filtreActif();
+
+    const une = actif ? [] : etat.apps.filter((a) => a.une);
+    const recents = actif ? [] : lireRecents().map((id) => etat.apps.find((a) => a.id === id)).filter(Boolean);
+
+    $('gridUne').replaceChildren(...une.map((a) => tuile(a, { grande: true })));
+    $('secUne').hidden = !une.length;
+    $('gridRecents').replaceChildren(...recents.map((a) => tuile(a)));
+    $('secRecents').hidden = !recents.length;
+    $('grille').replaceChildren(...resultats.map((a) => tuile(a)));
+    $('compte').textContent = actif ? '(' + resultats.length + ' sur ' + total + ')' : '(' + total + ')';
+
+    const vide = $('vide');
+    vide.hidden = resultats.length > 0;
+    if (!resultats.length) {
+      vide.replaceChildren();
+      if (!total) {
+        vide.append('Le catalogue est vide. Ajoutez une première application avec le bouton « Ajouter une application ».');
+      } else {
+        vide.append('Aucune activité ne correspond à cette recherche. ');
+        const b = el('button', { class: 'lien', type: 'button', text: 'Réinitialiser les filtres' });
+        b.addEventListener('click', reinitialiser);
+        vide.append(b);
+      }
+    }
+  }
+
+  function reinitialiser() {
+    etat.filtres.q = '';
+    etat.filtres.themes.clear();
+    etat.filtres.format = '';
+    etat.filtres.acces = '';
+    etat.filtres.qr = '';
+    $('q').value = '';
+    $('sFormat').value = '';
+    $('sAcces').value = '';
+    $('sQr').value = '';
+    majFiltres();
+  }
+
+  function majPied() {
+    const heure = etat.miseAJour
+      ? etat.miseAJour.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '';
+    const textes = {
+      'en-ligne': 'Catalogue en ligne, mis à jour à ' + heure,
+      'cache': 'Dernière version connue du catalogue',
+      'secours': 'Catalogue de secours'
+    };
+    $('etatCatalogue').textContent = textes[etat.source] || '';
+    $('reactiverAlertes').hidden = alertesActives();
+  }
+
+  /* ================= Formulaire d’ajout ================= */
+  function lireFormulaire() {
+    return {
+      nom: $('fNom').value.trim(),
+      theme: $('fTheme').value,
+      format: $('fFormat').value.trim(),
+      description: $('fDescription').value.trim(),
+      acces: $('fAcces').value,
+      qr_espace_formateur: $('fQr').value,
+      lien_formateur: $('fLienF').value.trim(),
+      lien_stagiaire: $('fLienS').value.trim(),
+      duree: $('fDuree').value.trim(),
+      groupe: $('fGroupe').value.trim(),
+      formation: $('fFormation').value.trim(),
+      statut: $('fStatut').value,
+      a_la_une: $('fUne').checked ? 'Oui' : '',
+      cle: $('fCle').value
+    };
+  }
+
+  function majApercu() {
+    const f = lireFormulaire();
+    $('cptDesc').textContent = String(f.description.length);
+    const parNom = new Map(etat.themes.map((t) => [norm(t.theme), t]));
+    const brut = Object.assign({}, f, { nom: f.nom || 'Nom de la tuile' });
+    const app = modele(brut, parNom, null);
+    if (app) $('apercu').replaceChildren(tuile(app, { apercu: true }));
+  }
+
+  function erreurFormulaire(message) {
+    const e = $('ajoutErreur');
+    e.hidden = !message;
+    e.textContent = message || '';
+  }
+
+  function ouvrirAjout() {
+    erreurFormulaire('');
+    const f = $('formAjout');
+    f.reset();
+    $('fTheme').replaceChildren(
+      el('option', { value: '', text: 'Choisir un thème' }),
+      ...etat.themes.map((t) => el('option', { value: t.theme, text: t.theme })));
+    $('dlFormats').replaceChildren(...formatsConnus().map((v) => el('option', { value: v })));
+    const cleSession = stock.lireSession(CLE_SESSION);
+    if (cleSession) { $('fCle').value = cleSession; $('fCleSession').checked = true; }
+    if (!URL_CATALOGUE) {
+      erreurFormulaire('La table de données n’est pas connectée : renseignez URL_CATALOGUE dans la page pour activer l’ajout.');
+    }
+    $('ajoutEnvoyer').disabled = !URL_CATALOGUE;
+    majApercu();
+    ouvrirDialogue($('dlgAjout'));
+    $('fNom').focus();
+  }
+
+  async function envoyerAjout(ev) {
+    ev.preventDefault();
+    erreurFormulaire('');
+    if (!URL_CATALOGUE) { erreurFormulaire('La table de données n’est pas connectée.'); return; }
+    const f = lireFormulaire();
+
+    const manque = [];
+    if (!f.nom) manque.push('le nom');
+    if (!f.theme) manque.push('le thème');
+    if (!f.format) manque.push('le format');
+    if (!f.description) manque.push('la description');
+    if (manque.length) { erreurFormulaire('À renseigner : ' + manque.join(', ') + '.'); return; }
+    if (!f.lien_formateur && !f.lien_stagiaire) { erreurFormulaire('Renseignez au moins un lien, formateur ou stagiaire.'); return; }
+    if (f.lien_formateur && !urlValide(f.lien_formateur)) { erreurFormulaire('Le lien formateur doit commencer par https://'); return; }
+    if (f.lien_stagiaire && !urlValide(f.lien_stagiaire)) { erreurFormulaire('Le lien stagiaire doit commencer par https://'); return; }
+    if (etat.apps.some((a) => a.id === slug(f.nom) || norm(a.nom) === norm(f.nom))) {
+      erreurFormulaire('Une application porte déjà ce nom dans la bibliothèque.'); return;
+    }
+    if (!f.cle) { erreurFormulaire('La clé d’ajout est nécessaire.'); return; }
+
+    const bouton = $('ajoutEnvoyer');
+    bouton.disabled = true;
+    bouton.textContent = 'Ajout en cours…';
+    try {
+      const cle = f.cle;
+      const app = Object.assign({}, f);
+      delete app.cle;
+      const rep = await fetch(URL_CATALOGUE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ cle, app })
+      });
+      let j;
+      try { j = await rep.json(); } catch (e) { throw new Error('Réponse inattendue de la table de données.'); }
+      if (!j || j.ok !== true) throw new Error((j && j.erreur) || 'L’ajout a été refusé.');
+
+      if ($('fCleSession').checked) stock.ecrireSession(CLE_SESSION, cle); else stock.effacerSession(CLE_SESSION);
+      fermerDialogue($('dlgAjout'));
+      toast('« ' + f.nom + ' » est ajoutée à la bibliothèque.');
+      try {
+        const donnees = await recuperer();
+        stock.ecrire(CLE_CACHE, JSON.stringify(donnees));
+        etat.miseAJour = new Date();
+        appliquer(donnees, 'en-ligne');
+      } catch (e) {
+        toast('Ajout enregistré. Rechargez la page pour afficher la tuile.');
+      }
+    } catch (e) {
+      erreurFormulaire(e instanceof TypeError
+        ? 'Impossible de joindre la table de données. Vérifiez la connexion.'
+        : (e.message || 'L’ajout a échoué.'));
+    } finally {
+      bouton.disabled = false;
+      bouton.textContent = 'Ajouter à la bibliothèque';
+    }
+  }
+
+  /* ================= Démarrage ================= */
+  $('q').addEventListener('input', (ev) => { etat.filtres.q = ev.target.value; majFiltres(); });
+  $('sFormat').addEventListener('change', (ev) => { etat.filtres.format = ev.target.value; majFiltres(); });
+  $('sAcces').addEventListener('change', (ev) => { etat.filtres.acces = ev.target.value; majFiltres(); });
+  $('sQr').addEventListener('change', (ev) => { etat.filtres.qr = ev.target.value; majFiltres(); });
+  $('btnReset').addEventListener('click', reinitialiser);
+  $('btnAjout').addEventListener('click', ouvrirAjout);
+  $('ajoutAnnuler').addEventListener('click', () => fermerDialogue($('dlgAjout')));
+  $('formAjout').addEventListener('submit', envoyerAjout);
+  $('formAjout').addEventListener('input', majApercu);
+  $('reactiverAlertes').addEventListener('click', () => {
+    stock.ecrire(CLE_ALERTES, 'on');
+    majPied();
+    toast('Les alertes de démonstration sont réactivées.');
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && etat.apps.length) rendreGrilles();
+  });
+
+  if (window.matchMedia && window.matchMedia('(min-width:700px)').matches) $('plusFiltres').setAttribute('open', '');
+  charger();
+})();
+</script>
+</body>
+</html>
